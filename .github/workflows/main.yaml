@@ -1,4 +1,4 @@
-name: choose_app
+name: Build
 
 concurrency:
   group: $-$

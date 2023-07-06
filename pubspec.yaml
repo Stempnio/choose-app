@@ -49,6 +49,7 @@ dev_dependencies:
     sdk: flutter
   bloc_test: ^9.1.2
   mocktail: ^0.3.0
+  test: ^1.24.1
 
   # Linting
   very_good_analysis: ^5.0.0
