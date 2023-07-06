@@ -15,6 +15,7 @@ dependencies:
   freezed_annotation: ^2.2.0
   json_annotation: ^4.8.1
   flutter_hooks: ^0.18.6
+  dartz: ^0.10.1
 
   # State management
   bloc: ^8.1.2
