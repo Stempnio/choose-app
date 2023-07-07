@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:choose_app/core/core.dart';
 import 'package:choose_app/presentation/pages/splash/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,5 +31,7 @@ class _SplashPageBody extends StatelessWidget {
 
   void _onInitialized(BuildContext context) {
     FlutterNativeSplash.remove();
+
+    context.router.replace(const DashboardRoute());
   }
 }

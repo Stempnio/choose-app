@@ -1,4 +1,6 @@
 {
     "@@locale": "en",
-    "general__hello": "Hello"
+    "general__hello": "Hello",
+    "general__home": "Home",
+    "general__settings": "Settings"
 }
