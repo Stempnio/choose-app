@@ -17,8 +17,8 @@ jobs:
     name: Code checker
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: subosito/flutter-action@v1
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
       - run: flutter doctor
       - run: flutter clean
       - run: flutter pub get
