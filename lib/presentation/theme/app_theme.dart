@@ -1,8 +1,15 @@
+import 'package:choose_app/presentation/constants/constants.dart';
 import 'package:flutter/material.dart';
 
 final appTheme = ThemeData(
-  appBarTheme: const AppBarTheme(color: Color(0xFF13B9FF)),
-  colorScheme: ColorScheme.fromSwatch(
-    accentColor: const Color(0xFF13B9FF),
+  useMaterial3: true,
+  brightness: Brightness.dark,
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      minimumSize: const Size(0, minElevatedButtonHeight),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(elevatedButtonRadius),
+      ),
+    ),
   ),
 );
