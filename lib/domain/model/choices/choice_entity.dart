@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'choice_entity.freezed.dart';
@@ -12,6 +13,19 @@ enum ChoiceType {
   bool get isActivity => this == ChoiceType.activity;
   bool get isFood => this == ChoiceType.food;
   bool get isCustom => this == ChoiceType.custom;
+
+  String str(BuildContext context) {
+    switch (this) {
+      case ChoiceType.place:
+        return 'Place';
+      case ChoiceType.activity:
+        return 'Activity';
+      case ChoiceType.food:
+        return 'Food';
+      case ChoiceType.custom:
+        return 'Custom';
+    }
+  }
 }
 
 @freezed
