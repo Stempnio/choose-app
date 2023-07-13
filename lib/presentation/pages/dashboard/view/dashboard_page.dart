@@ -15,6 +15,7 @@ class DashboardPage extends StatelessWidget {
         currentIndex: tabsRouter.activeIndex,
         onTap: tabsRouter.setActiveIndex,
         items: _navBarItems(context),
+        showUnselectedLabels: false,
       ),
     );
   }
