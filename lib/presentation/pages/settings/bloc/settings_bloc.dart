@@ -8,7 +8,7 @@ part 'settings_bloc.freezed.dart';
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   SettingsBloc() : super(const SettingsState.initial()) {
     on<SettingsEvent>((event, emit) {
-      // TODO: implement event handler
+      //@TODO: implement event handler
     });
   }
 }
