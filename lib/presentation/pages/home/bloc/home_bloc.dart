@@ -89,7 +89,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     final successState = state as HomeSuccessState;
 
     emit(
-      successState.copyWith(userChoices: []),
+      successState.copyWith(userChoices: [], selectedChoice: null),
     );
   }
 }
