@@ -10,13 +10,17 @@ part 'home_bloc.freezed.dart';
 
 @injectable
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  HomeBloc(this._drawChoiceUseCase) : super(const HomeState.success()) {
+  HomeBloc(this._drawChoiceUseCase)
+      : super(const HomeState.success(predefinedChoices: _mockChoices)) {
     on<HomeEvent>((event, emit) {
-      event.when(
-        choiceAdded: (choice) => _onChoiceAdded(choice, emit),
-        choiceRemoved: (choice) => _onChoiceRemoved(choice, emit),
-        choicesSubmitted: () => _onChoicesSubmitted(emit),
-      );
+      switch (event) {
+        case ChoiceAdded(:final choice):
+          _onChoiceAdded(choice, emit);
+        case ChoiceRemoved(:final choice):
+          _onChoiceRemoved(choice, emit);
+        case ChoicesSubmitted():
+          _onChoicesSubmitted(emit);
+      }
     });
   }
 
@@ -69,3 +73,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     );
   }
 }
+
+const _mockChoices = [
+  ChoiceEntity(id: '1', name: 'first', type: ChoiceType.place),
+  ChoiceEntity(id: '2', name: 'second', type: ChoiceType.place),
+  ChoiceEntity(id: '3', name: 'third', type: ChoiceType.place),
+  ChoiceEntity(id: '4', name: 'fourth', type: ChoiceType.place),
+  ChoiceEntity(id: '5', name: 'fifth', type: ChoiceType.place),
+];
