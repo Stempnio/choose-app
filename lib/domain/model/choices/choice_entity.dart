@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:uuid/uuid.dart';
 
 part 'choice_entity.freezed.dart';
 
@@ -35,4 +36,10 @@ class ChoiceEntity with _$ChoiceEntity {
     required String name,
     required ChoiceType type,
   }) = _ChoiceEntity;
+
+  factory ChoiceEntity.empty() => ChoiceEntity(
+        id: const Uuid().v1(),
+        name: '',
+        type: ChoiceType.place,
+      );
 }

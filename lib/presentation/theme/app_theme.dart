@@ -11,4 +11,8 @@ final appTheme = ThemeData(
       shape: RoundedRectangleBorder(borderRadius: borderRadiusLarge),
     ),
   ),
+  inputDecorationTheme: InputDecorationTheme(
+    border: OutlineInputBorder(borderRadius: borderRadiusLarge),
+    contentPadding: const EdgeInsets.all(20),
+  ),
 );
