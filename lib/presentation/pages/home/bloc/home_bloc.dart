@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:choose_app/domain/model/choices/choice_entity.dart';
 import 'package:choose_app/domain/use_case/draw_choice_use_case.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:injectable/injectable.dart';
 import 'package:uuid/uuid.dart';
 
@@ -28,6 +29,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   final DrawChoiceUseCase _drawChoiceUseCase;
+
+  Future<void> init() async {
+    await _requestPermissions();
+  }
 
   Future<void> _onChoiceAdded(
     ChoiceEntity choice,
@@ -91,6 +96,36 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     emit(
       successState.copyWith(userChoices: [], selectedChoice: null),
     );
+  }
+
+  Future<bool> _requestPermissions() async {
+    final serviceEnabled = await Geolocator.isLocationServiceEnabled();
+
+    if (!serviceEnabled) return false;
+
+    var permission = await Geolocator.checkPermission();
+
+    if (permission == LocationPermission.deniedForever) {
+      return false;
+    }
+
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+
+      if (permission == LocationPermission.denied) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  Future<Position?> _determinePosition() async {
+    final permissionsGranted = await _requestPermissions();
+
+    if (!permissionsGranted) return null;
+
+    return Geolocator.getCurrentPosition();
   }
 }
 
