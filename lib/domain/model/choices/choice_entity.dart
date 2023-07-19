@@ -1,3 +1,4 @@
+import 'package:choose_app/l10n/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:uuid/uuid.dart';
@@ -18,13 +19,13 @@ enum ChoiceType {
   String str(BuildContext context) {
     switch (this) {
       case ChoiceType.place:
-        return 'Place';
+        return context.l10n.choice_type__place;
       case ChoiceType.activity:
-        return 'Activity';
+        return context.l10n.choice_type__activity;
       case ChoiceType.food:
-        return 'Food';
+        return context.l10n.choice_type__food;
       case ChoiceType.custom:
-        return 'Custom';
+        return context.l10n.choice_type__custom;
     }
   }
 }
@@ -33,12 +34,14 @@ enum ChoiceType {
 class ChoiceEntity with _$ChoiceEntity {
   const factory ChoiceEntity({
     required String id,
+    required String instanceId,
     required String name,
     required ChoiceType type,
   }) = _ChoiceEntity;
 
   factory ChoiceEntity.empty() => ChoiceEntity(
-        id: const Uuid().v1(),
+        id: const Uuid().v4(),
+        instanceId: const Uuid().v4(),
         name: '',
         type: ChoiceType.place,
       );

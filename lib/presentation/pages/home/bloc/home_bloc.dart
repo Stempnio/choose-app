@@ -3,6 +3,7 @@ import 'package:choose_app/domain/model/choices/choice_entity.dart';
 import 'package:choose_app/domain/use_case/draw_choice_use_case.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
+import 'package:uuid/uuid.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';
@@ -11,7 +12,7 @@ part 'home_bloc.freezed.dart';
 @injectable
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc(this._drawChoiceUseCase)
-      : super(const HomeState.success(predefinedChoices: _mockChoices)) {
+      : super(HomeState.success(predefinedChoices: _mockChoices)) {
     on<HomeEvent>((event, emit) {
       switch (event) {
         case ChoiceAdded(:final choice):
@@ -34,8 +35,15 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     final successState = state as HomeSuccessState;
 
+    final uniqueChoice = choice.copyWith(instanceId: const Uuid().v4());
+
     emit(
-      successState.copyWith(userChoices: [...successState.userChoices, choice]),
+      successState.copyWith(
+        userChoices: [
+          ...successState.userChoices,
+          uniqueChoice,
+        ],
+      ),
     );
   }
 
@@ -74,10 +82,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 }
 
-const _mockChoices = [
-  ChoiceEntity(id: '1', name: 'first', type: ChoiceType.place),
-  ChoiceEntity(id: '2', name: 'second', type: ChoiceType.place),
-  ChoiceEntity(id: '3', name: 'third', type: ChoiceType.place),
-  ChoiceEntity(id: '4', name: 'fourth', type: ChoiceType.place),
-  ChoiceEntity(id: '5', name: 'fifth', type: ChoiceType.place),
-];
+final _mockChoices = List.generate(
+  50,
+  (index) => ChoiceEntity.empty().copyWith(name: 'Choice $index'),
+);

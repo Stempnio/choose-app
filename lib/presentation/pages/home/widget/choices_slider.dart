@@ -54,7 +54,7 @@ class _ChoicesSliderState extends State<ChoicesSlider> {
 
 class _ChoiceSliderCard extends HookWidget {
   _ChoiceSliderCard(this.choice, this.carouselController)
-      : super(key: ValueKey(choice.id));
+      : super(key: ValueKey(choice.instanceId));
 
   final ChoiceEntity choice;
   final CarouselController carouselController;

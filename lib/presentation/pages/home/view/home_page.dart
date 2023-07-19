@@ -97,16 +97,7 @@ class _SelectedChoicesView extends StatelessWidget {
             return AnimatedSwitcher(
               duration: homeSwitchDuration,
               child: userChoices.isNotEmpty
-                  ? Column(
-                      children: [
-                        // Text(
-                        //   context.l10n.home__selected_options,
-                        //   style: context.textTheme.bold.titleLarge,
-                        // ),
-                        VSpace.medium(),
-                        const ChoicesSlider(),
-                      ],
-                    )
+                  ? const ChoicesSlider()
                   : const SizedBox.shrink(),
             );
           default:
@@ -148,7 +139,7 @@ class _ChooseButton extends HookWidget {
             child: Text(
               didSelectOptions
                   ? context.l10n.home__choose
-                  : 'Select choices to proceed',
+                  : context.l10n.home__select_choices_to_proceed,
               style: context.textTheme.bold.titleMedium,
             ),
           ),
