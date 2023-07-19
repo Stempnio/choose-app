@@ -21,6 +21,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           _onChoiceRemoved(choice, emit);
         case ChoicesSubmitted():
           _onChoicesSubmitted(emit);
+        case ChoicesReset():
+          _onChoicesReset(emit);
       }
     });
   }
@@ -78,6 +80,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       (choice) => emit(
         successState.copyWith(selectedChoice: choice),
       ),
+    );
+  }
+
+  void _onChoicesReset(Emitter<HomeState> emit) {
+    if (state is! HomeSuccessState) return;
+
+    final successState = state as HomeSuccessState;
+
+    emit(
+      successState.copyWith(userChoices: []),
     );
   }
 }

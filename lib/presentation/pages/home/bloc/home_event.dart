@@ -5,4 +5,5 @@ class HomeEvent with _$HomeEvent {
   const factory HomeEvent.choiceAdded(ChoiceEntity choice) = ChoiceAdded;
   const factory HomeEvent.choiceRemoved(ChoiceEntity choice) = ChoiceRemoved;
   const factory HomeEvent.choicesSubmitted() = ChoicesSubmitted;
+  const factory HomeEvent.choicesReset() = ChoicesReset;
 }
