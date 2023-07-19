@@ -31,6 +31,7 @@ enum ChoiceType {
 @freezed
 class ChoiceEntity with _$ChoiceEntity {
   const factory ChoiceEntity({
+    required String id,
     required String name,
     required ChoiceType type,
   }) = _ChoiceEntity;

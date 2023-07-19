@@ -1,6 +1,11 @@
 {
     "@@locale": "en",
     "general__hello": "Hello",
+    "general__or": "or",
     "general__home": "Home",
-    "general__settings": "Settings"
+    "general__settings": "Settings",
+    "home__selected_options": "Selected options",
+    "home__choose": "Choose!",
+    "home__select_from_list": "Select from list",
+    "home__delete": "Delete"
 }
