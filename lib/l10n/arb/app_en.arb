@@ -1,6 +1,19 @@
 {
     "@@locale": "en",
     "general__hello": "Hello",
+    "general__or": "or",
     "general__home": "Home",
-    "general__settings": "Settings"
+    "general__settings": "Settings",
+    "general__add": "Add",
+    "home__selected_options": "Selected options",
+    "home__choose": "Choose!",
+    "home__select_from_list": "Select from list",
+    "home__delete": "Delete",
+    "home__no_choices_selected": "No choices selected yet",
+    "home__enter_your_choice": "Enter your own choice",
+    "home__select_choices_to_proceed": "Select choices to proceed",
+    "choice_type__place": "Place",
+    "choice_type__activity": "Activity",
+    "choice_type__food": "Food",
+    "choice_type__custom": "Custom"
 }

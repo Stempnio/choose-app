@@ -10,11 +10,13 @@ class DashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AutoTabsScaffold(
+      resizeToAvoidBottomInset: false,
       routes: _routes(),
       bottomNavigationBuilder: (_, tabsRouter) => BottomNavigationBar(
         currentIndex: tabsRouter.activeIndex,
         onTap: tabsRouter.setActiveIndex,
         items: _navBarItems(context),
+        showUnselectedLabels: false,
       ),
     );
   }

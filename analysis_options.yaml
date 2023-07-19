@@ -3,5 +3,6 @@ linter:
   rules:
     public_member_api_docs: false
     sort_pub_dependencies: false
+    one_member_abstracts: false
 analyzer:
   exclude: [build/**, bricks/**, lib/**.freezed.dart, lib/**.g.dart, lib/**.config.dart]
