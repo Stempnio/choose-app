@@ -1,0 +1,3 @@
+# Add line below to local.properties file
+
+google.maps.api.key=YOUR_GOOGLE_API_KEY
