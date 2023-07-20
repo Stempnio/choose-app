@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:choose_app/data/data.dart';
 import 'package:choose_app/data/model/places/place_dto.dart';
 import 'package:choose_app/data/service/places/places_service.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -9,6 +10,8 @@ import 'package:injectable/injectable.dart';
 
 const _baseUrl = 'api.yelp.com';
 const _placesEndpoint = '/v3/businesses/search';
+
+class YelpApiKeyMissingException implements Exception {}
 
 @Injectable(as: PlacesService)
 class PlacesServiceImpl implements PlacesService {
@@ -24,6 +27,9 @@ class PlacesServiceImpl implements PlacesService {
       'longitude': longitude.toString(),
     };
 
+    if (dotenv.env['YELP_API_KEY'] == null) {
+      throw YelpApiKeyMissingException();
+    }
     final apiKey = dotenv.get('YELP_API_KEY');
 
     final uri = Uri.https(_baseUrl, _placesEndpoint, queryParams);
@@ -33,19 +39,23 @@ class PlacesServiceImpl implements PlacesService {
     final response = await http.get(uri, headers: headers);
 
     if (response.statusCode == 200) {
-      final responseJson = jsonDecode(response.body) as Map<String, dynamic>;
+      try {
+        final responseJson = jsonDecode(response.body) as Map<String, dynamic>;
 
-      final placesJson = responseJson['businesses'] as List<dynamic>;
+        final placesJson = responseJson['businesses'] as List<dynamic>;
 
-      final places = placesJson
-          .map(
-            (placeJson) => PlaceDTO.fromJson(placeJson as Map<String, dynamic>),
-          )
-          .toList();
-
-      return places;
+        final places = placesJson
+            .map(
+              (placeJson) =>
+                  PlaceDTO.fromJson(placeJson as Map<String, dynamic>),
+            )
+            .toList();
+        return places;
+      } catch (_) {
+        throw DecodingException();
+      }
     } else {
-      throw Exception('Failed to load places');
+      throw NetworkException();
     }
   }
 }

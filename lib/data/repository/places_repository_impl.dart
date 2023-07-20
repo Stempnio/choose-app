@@ -18,14 +18,18 @@ class PlacesRepositoryImpl implements PlacesRepository {
     required double longitude,
     required double latitude,
   }) async {
-    final placesDTO = await _service.fetchPlaces(
-      term: term,
-      longitude: longitude,
-      latitude: latitude,
-    );
+    try {
+      final placesDTO = await _service.fetchPlaces(
+        term: term,
+        longitude: longitude,
+        latitude: latitude,
+      );
 
-    final placeEntities = placesDTO.map((place) => place.toEntity()).toList();
+      final placeEntities = placesDTO.map((place) => place.toEntity()).toList();
 
-    return Right(placeEntities);
+      return Right(placeEntities);
+    } catch (_) {
+      return Left(AppError());
+    }
   }
 }
