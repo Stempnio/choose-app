@@ -1,4 +1,4 @@
-package com.example.verygoodcore.choose_app
+package pl.jstepien.chooseapp
 
 import io.flutter.embedding.android.FlutterActivity
 
