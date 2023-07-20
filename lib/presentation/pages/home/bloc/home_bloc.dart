@@ -1,27 +1,29 @@
 import 'package:bloc/bloc.dart';
 import 'package:choose_app/domain/model/choices/choice_entity.dart';
-import 'package:choose_app/domain/use_case/draw_choice_use_case.dart';
+import 'package:choose_app/domain/model/places/coordinates_entity.dart';
+import 'package:choose_app/domain/model/places/place_entity.dart';
+import 'package:choose_app/domain/use_case/use_case.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:injectable/injectable.dart';
 import 'package:uuid/uuid.dart';
 
+part 'home_bloc.freezed.dart';
 part 'home_event.dart';
 part 'home_state.dart';
-part 'home_bloc.freezed.dart';
 
 @injectable
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  HomeBloc(this._drawChoiceUseCase)
+  HomeBloc(this._drawChoiceUseCase, this._fetchBestPlaceUseCase)
       : super(HomeState.success(predefinedChoices: _mockChoices)) {
-    on<HomeEvent>((event, emit) {
+    on<HomeEvent>((event, emit) async {
       switch (event) {
         case ChoiceAdded(:final choice):
-          _onChoiceAdded(choice, emit);
+          await _onChoiceAdded(choice, emit);
         case ChoiceRemoved(:final choice):
-          _onChoiceRemoved(choice, emit);
+          await _onChoiceRemoved(choice, emit);
         case ChoicesSubmitted():
-          _onChoicesSubmitted(emit);
+          await _onChoicesSubmitted(emit);
         case ChoicesReset():
           _onChoicesReset(emit);
       }
@@ -29,6 +31,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   final DrawChoiceUseCase _drawChoiceUseCase;
+  final FetchBestPlaceUseCase _fetchBestPlaceUseCase;
 
   Future<void> init() async {
     await _requestPermissions();
@@ -80,12 +83,43 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     final choiceResult = await _drawChoiceUseCase(successState.userChoices);
 
+    ChoiceEntity? selectedChoice;
+
     choiceResult.fold(
       (error) => emit(const HomeState.error()),
-      (choice) => emit(
-        successState.copyWith(selectedChoice: choice),
+      (choice) => selectedChoice = choice,
+    );
+
+    if (selectedChoice == null) return;
+
+    final place = await _getBestPlace(selectedChoice!);
+
+    emit(
+      successState.copyWith(
+        selectedChoice: selectedChoice,
+        suggestedPlace: place,
       ),
     );
+  }
+
+  Future<PlaceEntity?> _getBestPlace(ChoiceEntity choice) async {
+    final position = await _determinePosition();
+
+    if (position == null) return null;
+
+    PlaceEntity? bestPlace;
+
+    final bestPlaceResult = await _fetchBestPlaceUseCase(
+      (
+        term: choice.name,
+        longitude: position.longitude,
+        latitude: position.latitude,
+      ),
+    );
+
+    bestPlaceResult.fold((_) => null, (place) => bestPlace = place);
+
+    return bestPlace;
   }
 
   void _onChoicesReset(Emitter<HomeState> emit) {

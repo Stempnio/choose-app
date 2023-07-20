@@ -4,7 +4,8 @@ import 'package:dartz/dartz.dart';
 
 abstract class PlacesRepository {
   Future<Either<AppError, List<PlaceEntity>>> fetchPlaces({
-    required String longitude,
-    required String latitude,
+    required String term,
+    required double longitude,
+    required double latitude,
   });
 }

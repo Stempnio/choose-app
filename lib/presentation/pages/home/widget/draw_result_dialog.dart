@@ -1,5 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:choose_app/domain/model/choices/choice_entity.dart';
+import 'package:choose_app/domain/model/places/coordinates_entity.dart';
+import 'package:choose_app/domain/model/places/place_entity.dart';
 import 'package:choose_app/l10n/l10n.dart';
 import 'package:choose_app/presentation/constants/constants.dart';
 import 'package:choose_app/presentation/pages/home/bloc/bloc.dart';
@@ -11,10 +13,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class DrawResultDialog extends StatelessWidget {
   const DrawResultDialog({
     required this.choiceEntity,
+    this.suggestedPlace,
+    this.userLocation,
     super.key,
   });
 
   final ChoiceEntity choiceEntity;
+  final PlaceEntity? suggestedPlace;
+  final CoordinatesEntity? userLocation;
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +44,9 @@ class DrawResultDialog extends StatelessWidget {
               choiceEntity.name,
               style: context.textTheme.bold.headlineLarge,
             ),
+            VSpace.small(),
+            const Divider(),
+            Text('Rekomendowane miejsce'),
             VSpace.large(),
             SizedBox(
               width: double.maxFinite,

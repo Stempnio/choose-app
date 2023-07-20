@@ -65,7 +65,11 @@ class HomePage extends StatelessWidget implements AutoRouteWrapper {
       context: context,
       builder: (context) => BlocProvider.value(
         value: homeBloc,
-        child: DrawResultDialog(choiceEntity: selectedChoice),
+        child: DrawResultDialog(
+          choiceEntity: selectedChoice,
+          suggestedPlace: state.suggestedPlace,
+          userLocation: state.userLocation,
+        ),
       ),
       barrierDismissible: false,
     );
