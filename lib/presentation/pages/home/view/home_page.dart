@@ -17,7 +17,7 @@ class HomePage extends StatelessWidget implements AutoRouteWrapper {
   @override
   Widget wrappedRoute(BuildContext context) => SafeArea(
         child: BlocProvider(
-          create: (_) => getIt<HomeBloc>(),
+          create: (_) => getIt<HomeBloc>()..init(),
           child: this,
         ),
       );
@@ -65,7 +65,11 @@ class HomePage extends StatelessWidget implements AutoRouteWrapper {
       context: context,
       builder: (context) => BlocProvider.value(
         value: homeBloc,
-        child: DrawResultDialog(choiceEntity: selectedChoice),
+        child: DrawResultDialog(
+          choiceEntity: selectedChoice,
+          suggestedPlace: state.suggestedPlace,
+          userLocation: state.userLocation,
+        ),
       ),
       barrierDismissible: false,
     );

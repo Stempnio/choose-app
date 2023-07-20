@@ -7,6 +7,8 @@ class HomeState with _$HomeState {
     @Default([]) List<ChoiceEntity> userChoices,
     @Default([]) List<ChoiceEntity> predefinedChoices,
     ChoiceEntity? selectedChoice,
+    PlaceEntity? suggestedPlace,
+    CoordinatesEntity? userLocation,
   }) = HomeSuccessState;
   const factory HomeState.error() = _Error;
 }
