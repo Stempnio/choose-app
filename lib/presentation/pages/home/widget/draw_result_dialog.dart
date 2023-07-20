@@ -46,7 +46,7 @@ class DrawResultDialog extends StatelessWidget {
             ),
             VSpace.small(),
             const Divider(),
-            Text('Rekomendowane miejsce'),
+            //@TODO: add suggested place on map
             VSpace.large(),
             SizedBox(
               width: double.maxFinite,
