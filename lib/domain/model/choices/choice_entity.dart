@@ -30,6 +30,8 @@ enum ChoiceType {
   }
 }
 
+String generateChoiceId() => const Uuid().v4();
+
 @freezed
 class ChoiceEntity with _$ChoiceEntity {
   const factory ChoiceEntity({
