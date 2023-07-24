@@ -80,6 +80,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     final successState = state as HomeSuccessState;
 
+    emit(successState.copyWith(status: DrawStatus.pending));
+
     final choiceResult = await _drawChoiceUseCase(successState.userChoices);
 
     ChoiceEntity? selectedChoice;
@@ -100,6 +102,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         selectedChoice: selectedChoice,
         suggestedPlace: suggestedPlace,
         userLocation: userLocation,
+        status: DrawStatus.success,
       ),
     );
   }
