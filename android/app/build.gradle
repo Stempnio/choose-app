@@ -27,7 +27,15 @@ if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
 
+def googleMapsApiKey = localProperties.getProperty('google.maps.api.key')
+if(googleMapsApiKey == null) {
+    throw new GradleException("Google Maps API Key not found. Define location with google.maps.api.key in the local.properties file.")
+}
+
 apply plugin: 'com.android.application'
+// START: FlutterFire Configuration
+apply plugin: 'com.google.gms.google-services'
+// END: FlutterFire Configuration
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
@@ -58,7 +66,7 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
 
-        resValue "string", "google_maps_key", (project.findProperty("google.maps.api.key") ?: "")
+        resValue "string", "google_maps_key", googleMapsApiKey
     }
 
     signingConfigs {
