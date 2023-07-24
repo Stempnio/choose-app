@@ -5,7 +5,7 @@ part 'coordinates_entity.freezed.dart';
 @freezed
 class CoordinatesEntity with _$CoordinatesEntity {
   const factory CoordinatesEntity({
-    required String latitude,
-    required String longitude,
+    required double latitude,
+    required double longitude,
   }) = _CoordinatesEntity;
 }

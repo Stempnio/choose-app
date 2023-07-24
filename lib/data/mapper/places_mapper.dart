@@ -13,7 +13,7 @@ extension PlacesMapper on PlaceDTO {
 
 extension CoordinatesMapper on CoordinatesDTO {
   CoordinatesEntity toEntity() => CoordinatesEntity(
-        latitude: latitude.toString(),
-        longitude: longitude.toString(),
+        latitude: latitude,
+        longitude: longitude,
       );
 }

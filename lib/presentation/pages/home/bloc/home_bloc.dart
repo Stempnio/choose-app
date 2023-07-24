@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:choose_app/domain/model/choices/choice_entity.dart';
-import 'package:choose_app/domain/model/places/coordinates_entity.dart';
 import 'package:choose_app/domain/model/places/place_entity.dart';
 import 'package:choose_app/domain/use_case/use_case.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -81,6 +80,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     final successState = state as HomeSuccessState;
 
+    emit(successState.copyWith(status: DrawStatus.pending));
+
     final choiceResult = await _drawChoiceUseCase(successState.userChoices);
 
     ChoiceEntity? selectedChoice;
@@ -92,28 +93,31 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     if (selectedChoice == null) return;
 
-    final place = await _getBestPlace(selectedChoice!);
+    final userLocation = await _determineUserPosition();
+
+    final suggestedPlace = await _getBestPlace(selectedChoice!, userLocation!);
 
     emit(
       successState.copyWith(
         selectedChoice: selectedChoice,
-        suggestedPlace: place,
+        suggestedPlace: suggestedPlace,
+        userLocation: userLocation,
+        status: DrawStatus.success,
       ),
     );
   }
 
-  Future<PlaceEntity?> _getBestPlace(ChoiceEntity choice) async {
-    final position = await _determinePosition();
-
-    if (position == null) return null;
-
+  Future<PlaceEntity?> _getBestPlace(
+    ChoiceEntity choice,
+    Position userPosition,
+  ) async {
     PlaceEntity? bestPlace;
 
     final bestPlaceResult = await _fetchBestPlaceUseCase(
       (
         term: choice.name,
-        longitude: position.longitude,
-        latitude: position.latitude,
+        longitude: userPosition.longitude,
+        latitude: userPosition.latitude,
       ),
     );
 
@@ -154,7 +158,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     return true;
   }
 
-  Future<Position?> _determinePosition() async {
+  Future<Position?> _determineUserPosition() async {
     final permissionsGranted = await _requestPermissions();
 
     if (!permissionsGranted) return null;

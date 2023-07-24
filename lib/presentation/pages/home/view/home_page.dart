@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:auto_route/auto_route.dart';
 import 'package:choose_app/core/core.dart';
 import 'package:choose_app/l10n/l10n.dart';
@@ -23,28 +24,46 @@ class HomePage extends StatelessWidget implements AutoRouteWrapper {
       );
 
   @override
-  Widget build(BuildContext context) => BlocListener<HomeBloc, HomeState>(
+  Widget build(BuildContext context) => BlocConsumer<HomeBloc, HomeState>(
         listenWhen: _listenWhen,
         listener: _listener,
-        child: Column(
+        buildWhen: _buildWhen,
+        builder: (context, state) => Stack(
           children: [
-            const _ChoiceTextField(),
-            Text(
-              context.l10n.general__or.toUpperCase(),
-              style: context.textTheme.bold.headlineSmall,
+            Column(
+              children: [
+                const _ChoiceTextField(),
+                Text(
+                  context.l10n.general__or.toUpperCase(),
+                  style: context.textTheme.bold.headlineSmall,
+                ),
+                VSpace.medium(),
+                ElevatedButton(
+                  onPressed: () => _onPressedShowModal(context),
+                  child: Text(context.l10n.home__select_from_list),
+                ),
+                const Spacer(),
+                const _SelectedChoicesView(),
+                const Spacer(),
+                const _ChooseButton(),
+              ],
             ),
-            VSpace.medium(),
-            ElevatedButton(
-              onPressed: () => _onPressedShowModal(context),
-              child: Text(context.l10n.home__select_from_list),
-            ),
-            const Spacer(),
-            const _SelectedChoicesView(),
-            const Spacer(),
-            const _ChooseButton(),
+            if (state is HomeSuccessState && state.status.isPending)
+              BackdropFilter(
+                filter: ImageFilter.blur(
+                  sigmaX: homePageBlurValue,
+                  sigmaY: homePageBlurValue,
+                ),
+                child: const Center(child: CircularProgressIndicator()),
+              ),
           ],
         ),
       );
+
+  bool _buildWhen(HomeState previous, HomeState current) =>
+      previous is HomeSuccessState &&
+      current is HomeSuccessState &&
+      previous.status != current.status;
 
   bool _listenWhen(HomeState previous, HomeState current) =>
       previous is HomeSuccessState &&
