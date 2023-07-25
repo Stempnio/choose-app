@@ -2,6 +2,7 @@ import 'package:choose_app/data/model/choices/choice_dto.dart';
 import 'package:choose_app/data/service/choices/choices_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:injectable/injectable.dart';
+import 'package:choose_app/data/service/choices/exceptions.dart';
 
 const _choicesCollection = 'choices';
 const _itemsCollection = 'items';
@@ -14,21 +15,25 @@ class ChoicesServiceImpl implements ChoicesService {
   Future<List<ChoiceDTO>> fetchPredefinedChoices({
     required String locale,
   }) async {
-    final categories = await _fetchCategories();
+    try {
+      final categories = await _fetchCategories();
 
-    final choices = <ChoiceDTO>[];
+      final choices = <ChoiceDTO>[];
 
-    for (final category in categories) {
-      final categoryChoices = await _fetchCategoryItems(
-        categoryId: category.id,
-        categoryName: category.name,
-        locale: locale,
-      );
+      for (final category in categories) {
+        final categoryChoices = await _fetchCategoryItems(
+          categoryId: category.id,
+          categoryName: category.name,
+          locale: locale,
+        );
 
-      choices.addAll(categoryChoices);
+        choices.addAll(categoryChoices);
+      }
+
+      return choices;
+    } catch (e) {
+      throw FetchChoicesException();
     }
-
-    return choices;
   }
 
   Future<List<({String id, String name})>> _fetchCategories() async {

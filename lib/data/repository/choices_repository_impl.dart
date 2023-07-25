@@ -5,8 +5,6 @@ import 'package:choose_app/domain/domain.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-class NoChoicesGivenException implements Exception {}
-
 @Injectable(as: ChoicesRepository)
 class ChoicesRepositoryImpl implements ChoicesRepository {
   ChoicesRepositoryImpl(this._service);
