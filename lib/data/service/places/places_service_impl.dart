@@ -1,9 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:choose_app/data/data.dart';
-import 'package:choose_app/data/model/places/place_dto.dart';
-import 'package:choose_app/data/service/places/places_service.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:injectable/injectable.dart';

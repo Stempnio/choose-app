@@ -1,8 +1,8 @@
 import 'package:choose_app/data/model/choices/choice_dto.dart';
 import 'package:choose_app/data/service/choices/choices_service.dart';
+import 'package:choose_app/data/service/choices/exceptions.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:injectable/injectable.dart';
-import 'package:choose_app/data/service/choices/exceptions.dart';
 
 const _choicesCollection = 'choices';
 const _itemsCollection = 'items';

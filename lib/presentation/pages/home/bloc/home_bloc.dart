@@ -1,7 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:choose_app/domain/model/choices/choice_entity.dart';
-import 'package:choose_app/domain/model/places/place_entity.dart';
-import 'package:choose_app/domain/use_case/use_case.dart';
+import 'package:choose_app/domain/domain.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:injectable/injectable.dart';

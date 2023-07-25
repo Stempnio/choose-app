@@ -1,4 +1,4 @@
-import 'package:choose_app/data/model/places/coordinates_dto.dart';
+import 'package:choose_app/data/data.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'place_dto.freezed.dart';

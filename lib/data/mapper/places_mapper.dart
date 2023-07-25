@@ -1,6 +1,5 @@
 import 'package:choose_app/data/model/places/coordinates_dto.dart';
 import 'package:choose_app/data/model/places/place_dto.dart';
-import 'package:choose_app/domain/model/places/coordinates_entity.dart';
 import 'package:choose_app/domain/model/places/places.dart';
 
 extension PlacesMapper on PlaceDTO {
