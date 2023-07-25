@@ -1,7 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:choose_app/domain/model/choices/choice_entity.dart';
-import 'package:choose_app/domain/model/places/place_entity.dart';
-import 'package:choose_app/domain/use_case/use_case.dart';
+import 'package:choose_app/domain/domain.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:injectable/injectable.dart';
@@ -13,8 +11,11 @@ part 'home_state.dart';
 
 @injectable
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  HomeBloc(this._drawChoiceUseCase, this._fetchBestPlaceUseCase)
-      : super(HomeState.success(predefinedChoices: _mockChoices)) {
+  HomeBloc(
+    this._drawChoiceUseCase,
+    this._fetchBestPlaceUseCase,
+    this._fetchChoices,
+  ) : super(const HomeState.initial()) {
     on<HomeEvent>((event, emit) async {
       switch (event) {
         case ChoiceAdded(:final choice):
@@ -25,15 +26,33 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           await _onChoicesSubmitted(emit);
         case ChoicesReset():
           _onChoicesReset(emit);
+        case PredefinedChoicesFetched(:final locale):
+          await _onPredefinedChoicesFetched(locale, emit);
       }
     });
   }
 
   final DrawChoiceUseCase _drawChoiceUseCase;
   final FetchBestPlaceUseCase _fetchBestPlaceUseCase;
+  final FetchPredefinedChoiceUseCase _fetchChoices;
 
-  Future<void> init() async {
+  Future<void> init({required String locale}) async {
     await _requestPermissions();
+    add(HomeEvent.predefinedChoicesFetched(locale: locale));
+  }
+
+  Future<void> _onPredefinedChoicesFetched(
+    String locale,
+    Emitter<HomeState> emit,
+  ) async {
+    emit(const HomeState.loading());
+
+    final choicesResult = await _fetchChoices(locale);
+
+    choicesResult.fold(
+      (error) => emit(const HomeState.error()),
+      (choices) => emit(HomeState.success(predefinedChoices: choices)),
+    );
   }
 
   Future<void> _onChoiceAdded(
@@ -166,8 +185,3 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     return Geolocator.getCurrentPosition();
   }
 }
-
-final _mockChoices = List.generate(
-  50,
-  (index) => ChoiceEntity.empty().copyWith(name: 'Choice $index'),
-);

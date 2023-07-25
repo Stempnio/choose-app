@@ -1,4 +1,25 @@
 {
     "@@locale": "pl",
-    "general__hello": "Witaj"
+    "general__hello": "Cześć",
+    "general__or": "lub",
+    "general__home": "Dom",
+    "general__settings": "Ustawienia",
+    "general__add": "Dodaj",
+    "general__close": "Zamknij",
+    "general__you": "Ty",
+    "home__selected_options": "Wybrane opcje",
+    "home__choose": "Wybierz!",
+    "home__select_from_list": "Wybierz z listy",
+    "home__delete": "Usuń",
+    "home__no_choices_selected": "Nie wybrano jeszcze żadnych opcji",
+    "home__enter_your_choice": "Wpisz własną opcję",
+    "home__select_choices_to_proceed": "Wybierz opcje, aby kontynuować",
+    "home__draw_result": "Wynik losowania",
+    "home__suggested_place": "Sugerowane miejsce",
+    "home__suggested_place_nearby": "sugerowane miejsce w pobliżu",
+    "home__check_other_places": "Sprawdź inne miejsca w pobliżu",
+    "choice_type__place": "Miejsce",
+    "choice_type__activity": "Aktywność",
+    "choice_type__food": "Jedzenie",
+    "choice_type__custom": "Niestandardowe"
 }

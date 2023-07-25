@@ -1,5 +1,4 @@
 import 'package:choose_app/domain/domain.dart';
-import 'package:choose_app/domain/model/places/place_entity.dart';
 import 'package:choose_app/domain/use_case/places/typedefs.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';

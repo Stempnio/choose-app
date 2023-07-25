@@ -1,5 +1,4 @@
 import 'package:choose_app/data/data.dart';
-import 'package:choose_app/data/service/places/places_service.dart';
 import 'package:choose_app/domain/error/app_error.dart';
 import 'package:choose_app/domain/model/places/place_entity.dart';
 import 'package:choose_app/domain/repository/places_repository.dart';

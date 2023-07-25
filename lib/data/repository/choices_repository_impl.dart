@@ -1,14 +1,16 @@
 import 'dart:math';
-
+import 'package:choose_app/data/mapper/mapper.dart';
+import 'package:choose_app/data/service/choices/choices_service.dart';
 import 'package:choose_app/domain/domain.dart';
-import 'package:choose_app/domain/model/choices/choice_entity.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-class NoChoicesGivenException implements Exception {}
-
 @Injectable(as: ChoicesRepository)
 class ChoicesRepositoryImpl implements ChoicesRepository {
+  ChoicesRepositoryImpl(this._service);
+
+  final ChoicesService _service;
+
   @override
   Future<Either<AppError, ChoiceEntity>> drawChoice(
     List<ChoiceEntity> choices,
@@ -23,10 +25,18 @@ class ChoicesRepositoryImpl implements ChoicesRepository {
   }
 
   @override
-  Future<Either<AppError, List<ChoiceEntity>>> getPredefinedChoices(
-    ChoiceType type,
-  ) {
-    //@TODO: implement getChoicesByType
-    throw UnimplementedError();
+  Future<Either<AppError, List<ChoiceEntity>>> fetchPredefinedChoices({
+    required String locale,
+  }) async {
+    try {
+      final choiceDTOs = await _service.fetchPredefinedChoices(locale: locale);
+
+      final result =
+          choiceDTOs.map((choiceDTO) => choiceDTO.toEntity()).toList();
+
+      return Right(result);
+    } catch (_) {
+      return Left(AppError());
+    }
   }
 }

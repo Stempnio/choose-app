@@ -1,4 +1,4 @@
-import 'package:choose_app/data/model/places/place_dto.dart';
+import 'package:choose_app/data/data.dart';
 
 abstract class PlacesService {
   Future<List<PlaceDTO>> fetchPlaces({

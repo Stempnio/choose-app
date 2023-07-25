@@ -1,5 +1,4 @@
-import 'package:choose_app/domain/error/app_error.dart';
-import 'package:choose_app/domain/model/places/places.dart';
+import 'package:choose_app/domain/domain.dart';
 import 'package:dartz/dartz.dart';
 
 abstract class PlacesRepository {

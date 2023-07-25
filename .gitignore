@@ -1,5 +1,9 @@
 .env
 
+**/google-services.json
+
+**/*.mocks.dart
+
 # Miscellaneous
 *.class
 *.log

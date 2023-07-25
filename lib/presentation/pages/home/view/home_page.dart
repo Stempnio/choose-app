@@ -18,7 +18,7 @@ class HomePage extends StatelessWidget implements AutoRouteWrapper {
   @override
   Widget wrappedRoute(BuildContext context) => SafeArea(
         child: BlocProvider(
-          create: (_) => getIt<HomeBloc>()..init(),
+          create: (_) => getIt<HomeBloc>()..init(locale: context.locale),
           child: this,
         ),
       );
