@@ -6,4 +6,7 @@ class HomeEvent with _$HomeEvent {
   const factory HomeEvent.choiceRemoved(ChoiceEntity choice) = ChoiceRemoved;
   const factory HomeEvent.choicesSubmitted() = ChoicesSubmitted;
   const factory HomeEvent.choicesReset() = ChoicesReset;
+  const factory HomeEvent.predefinedChoicesFetched({
+    required String locale,
+  }) = PredefinedChoicesFetched;
 }
