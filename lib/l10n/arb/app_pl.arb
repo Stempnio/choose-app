@@ -18,8 +18,9 @@
     "home__suggested_place": "Sugerowane miejsce",
     "home__suggested_place_nearby": "sugerowane miejsce w pobliżu",
     "home__check_other_places": "Sprawdź inne miejsca w pobliżu",
+    "home__choosing": "Losowanie w toku...",
     "choice_type__place": "Miejsce",
     "choice_type__activity": "Aktywność",
     "choice_type__food": "Jedzenie",
-    "choice_type__custom": "Niestandardowe"
+    "choice_type__custom": "Własne"
 }

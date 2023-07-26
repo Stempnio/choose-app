@@ -5,7 +5,6 @@ import 'package:choose_app/l10n/l10n.dart';
 import 'package:choose_app/presentation/constants/constants.dart';
 import 'package:choose_app/presentation/pages/home/home.dart';
 import 'package:choose_app/presentation/theme/utils.dart';
-import 'package:choose_app/presentation/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -37,10 +36,15 @@ class HomePage extends StatelessWidget implements AutoRouteWrapper {
                   context.l10n.general__or.toUpperCase(),
                   style: context.textTheme.bold.headlineSmall,
                 ),
-                VSpace.medium(),
-                ElevatedButton(
-                  onPressed: () => _onPressedShowModal(context),
-                  child: Text(context.l10n.home__select_from_list),
+                Padding(
+                  padding: const EdgeInsets.all(smallSize),
+                  child: Card(
+                    child: ListTile(
+                      title: Text(context.l10n.home__select_from_list),
+                      trailing: const Icon(Icons.arrow_forward_ios),
+                      onTap: () => _onPressedShowModal(context),
+                    ),
+                  ),
                 ),
                 const Spacer(),
                 const _SelectedChoicesView(),
@@ -54,7 +58,7 @@ class HomePage extends StatelessWidget implements AutoRouteWrapper {
                   sigmaX: homePageBlurValue,
                   sigmaY: homePageBlurValue,
                 ),
-                child: const Center(child: CircularProgressIndicator()),
+                child: const Center(child: LoadingCard()),
               ),
           ],
         ),
