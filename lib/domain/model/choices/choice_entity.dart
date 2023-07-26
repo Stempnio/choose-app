@@ -45,6 +45,6 @@ class ChoiceEntity with _$ChoiceEntity {
         id: const Uuid().v4(),
         instanceId: const Uuid().v4(),
         name: '',
-        type: ChoiceType.place,
+        type: ChoiceType.custom,
       );
 }
