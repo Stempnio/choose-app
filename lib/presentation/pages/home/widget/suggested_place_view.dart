@@ -1,4 +1,4 @@
-import 'package:choose_app/domain/model/places/places.dart';
+import 'package:choose_app/domain/domain.dart';
 import 'package:choose_app/l10n/l10n.dart';
 import 'package:choose_app/presentation/presentation.dart';
 import 'package:choose_app/presentation/utils/border_radius.dart';
@@ -7,16 +7,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:maps_launcher/maps_launcher.dart';
 
 class SuggestedPlaceView extends StatelessWidget {
   const SuggestedPlaceView({
     required this.place,
     required this.userLocation,
+    required this.userChoice,
+    required this.onClose,
     super.key,
   });
 
   final PlaceEntity place;
   final Position userLocation;
+  final ChoiceEntity userChoice;
+  final VoidCallback onClose;
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +67,8 @@ class SuggestedPlaceView extends StatelessWidget {
   }
 
   void _onPressedCheckOtherPlaces(BuildContext context) {
-    //@TODO implement
+    MapsLauncher.launchQuery(userChoice.name);
+    onClose();
   }
 
   String get _distanceToSuggestedPlace =>

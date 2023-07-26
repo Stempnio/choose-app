@@ -10,10 +10,12 @@ import 'package:choose_app/presentation/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class DrawResultDialog extends StatelessWidget {
   const DrawResultDialog({
     required this.choiceEntity,
+    required this.isLocationPermissionGranted,
     this.suggestedPlace,
     this.userLocation,
     super.key,
@@ -22,6 +24,7 @@ class DrawResultDialog extends StatelessWidget {
   final ChoiceEntity choiceEntity;
   final PlaceEntity? suggestedPlace;
   final Position? userLocation;
+  final bool isLocationPermissionGranted;
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +55,13 @@ class DrawResultDialog extends StatelessWidget {
                 child: SuggestedPlaceView(
                   place: suggestedPlace!,
                   userLocation: userLocation!,
+                  userChoice: choiceEntity,
+                  onClose: () => _onPressedClose(context),
                 ),
+              )
+            else if (!isLocationPermissionGranted)
+              _PermissionsNotGrantedView(
+                onClose: () => _onPressedClose(context),
               ),
             SizedBox(
               width: double.maxFinite,
@@ -70,5 +79,32 @@ class DrawResultDialog extends StatelessWidget {
   void _onPressedClose(BuildContext context) {
     context.read<HomeBloc>().add(const HomeEvent.choicesReset());
     context.router.pop();
+  }
+}
+
+class _PermissionsNotGrantedView extends StatelessWidget {
+  const _PermissionsNotGrantedView({required this.onClose});
+
+  final VoidCallback onClose;
+
+  @override
+  Widget build(BuildContext context) => Column(
+        children: [
+          Text(
+            context.l10n.home__share_localization_prompt,
+            textAlign: TextAlign.center,
+          ),
+          VSpace.small(),
+          OutlinedButton(
+            onPressed: _onPressedOpenSettings,
+            child: Text(context.l10n.home__open_settings),
+          ),
+          VSpace.large(),
+        ],
+      );
+
+  void _onPressedOpenSettings() {
+    openAppSettings();
+    onClose();
   }
 }

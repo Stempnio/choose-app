@@ -3,6 +3,7 @@ import 'package:choose_app/domain/domain.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:injectable/injectable.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:uuid/uuid.dart';
 
 part 'home_bloc.freezed.dart';
@@ -37,7 +38,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final FetchPredefinedChoiceUseCase _fetchChoices;
 
   Future<void> init({required String locale}) async {
-    await _requestPermissions();
     add(HomeEvent.predefinedChoicesFetched(locale: locale));
   }
 
@@ -114,7 +114,19 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     final userLocation = await _determineUserPosition();
 
-    final suggestedPlace = await _getBestPlace(selectedChoice!, userLocation!);
+    if (userLocation == null) {
+      return emit(
+        successState.copyWith(
+          selectedChoice: selectedChoice,
+          status: DrawStatus.success,
+          isLocationPermissionGranted: false,
+          userLocation: null,
+          suggestedPlace: null,
+        ),
+      );
+    }
+
+    final suggestedPlace = await _getBestPlace(selectedChoice!, userLocation);
 
     emit(
       successState.copyWith(
@@ -122,6 +134,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         suggestedPlace: suggestedPlace,
         userLocation: userLocation,
         status: DrawStatus.success,
+        isLocationPermissionGranted: true,
       ),
     );
   }
@@ -155,33 +168,24 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     );
   }
 
-  Future<bool> _requestPermissions() async {
-    final serviceEnabled = await Geolocator.isLocationServiceEnabled();
-
-    if (!serviceEnabled) return false;
-
-    var permission = await Geolocator.checkPermission();
-
-    if (permission == LocationPermission.deniedForever) {
-      return false;
-    }
-
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-
-      if (permission == LocationPermission.denied) {
-        return false;
-      }
-    }
-
-    return true;
-  }
+  Future<bool> _requestPermissions() async =>
+      Permission.location.request().isGranted;
 
   Future<Position?> _determineUserPosition() async {
-    final permissionsGranted = await _requestPermissions();
+    try {
+      final serviceEnabled = await Geolocator.isLocationServiceEnabled();
 
-    if (!permissionsGranted) return null;
+      if (!serviceEnabled) return null;
 
-    return Geolocator.getCurrentPosition();
+      final permissionsGranted = await _requestPermissions();
+
+      if (!permissionsGranted) return null;
+
+      final position = await Geolocator.getCurrentPosition();
+
+      return position;
+    } catch (_) {
+      return null;
+    }
   }
 }

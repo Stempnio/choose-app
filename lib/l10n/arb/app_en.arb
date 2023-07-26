@@ -19,6 +19,8 @@
     "home__suggested_place_nearby": "suggested place nearby",
     "home__check_other_places": "Check out other places nearby",
     "home__choosing": "Choosing...",
+    "home__share_localization_prompt": "To enable us to suggest places nearby, please share your location information.",
+    "home__open_settings": "Open settings",
     "choice_type__place": "Place",
     "choice_type__activity": "Activity",
     "choice_type__food": "Food",

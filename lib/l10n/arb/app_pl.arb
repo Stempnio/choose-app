@@ -19,6 +19,8 @@
     "home__suggested_place_nearby": "sugerowane miejsce w pobliżu",
     "home__check_other_places": "Sprawdź inne miejsca w pobliżu",
     "home__choosing": "Losowanie w toku...",
+    "home__open_settings": "Otwórz ustawienia",
+    "home__share_localization_prompt": "Aby wyświetlić miejsca w pobliżu, wyraź zgodę na udostępnianie lokalizacji",
     "choice_type__place": "Miejsce",
     "choice_type__activity": "Aktywność",
     "choice_type__food": "Jedzenie",
