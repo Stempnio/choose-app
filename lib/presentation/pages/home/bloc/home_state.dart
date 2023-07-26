@@ -22,6 +22,7 @@ class HomeState with _$HomeState {
     PlaceEntity? suggestedPlace,
     Position? userLocation,
     @Default(DrawStatus.initial) DrawStatus status,
+    @Default(false) bool isLocationPermissionGranted,
   }) = HomeSuccessState;
   const factory HomeState.error() = _Error;
 }

@@ -29,30 +29,33 @@ class HomePage extends StatelessWidget implements AutoRouteWrapper {
         buildWhen: _buildWhen,
         builder: (context, state) => Stack(
           children: [
-            Column(
-              children: [
-                const _ChoiceTextField(),
-                Text(
-                  context.l10n.general__or.toUpperCase(),
-                  style: context.textTheme.bold.headlineSmall,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(smallSize),
-                  child: Card(
-                    child: ListTile(
-                      title: Text(context.l10n.home__select_from_list),
-                      trailing: const Icon(Icons.arrow_forward_ios),
-                      onTap: () => _onPressedShowModal(context),
+            IgnorePointer(
+              ignoring: _isDrawPending(state),
+              child: Column(
+                children: [
+                  const _ChoiceTextField(),
+                  Text(
+                    context.l10n.general__or.toUpperCase(),
+                    style: context.textTheme.bold.headlineSmall,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(smallSize),
+                    child: Card(
+                      child: ListTile(
+                        title: Text(context.l10n.home__select_from_list),
+                        trailing: const Icon(Icons.arrow_forward_ios),
+                        onTap: () => _onPressedShowModal(context),
+                      ),
                     ),
                   ),
-                ),
-                const Spacer(),
-                const _SelectedChoicesView(),
-                const Spacer(),
-                const _ChooseButton(),
-              ],
+                  const Spacer(),
+                  const _SelectedChoicesView(),
+                  const Spacer(),
+                  const _ChooseButton(),
+                ],
+              ),
             ),
-            if (state is HomeSuccessState && state.status.isPending)
+            if (_isDrawPending(state))
               BackdropFilter(
                 filter: ImageFilter.blur(
                   sigmaX: homePageBlurValue,
@@ -63,6 +66,9 @@ class HomePage extends StatelessWidget implements AutoRouteWrapper {
           ],
         ),
       );
+
+  bool _isDrawPending(HomeState state) =>
+      state is HomeSuccessState && state.status.isPending;
 
   bool _buildWhen(HomeState previous, HomeState current) =>
       previous is HomeSuccessState &&
@@ -92,6 +98,7 @@ class HomePage extends StatelessWidget implements AutoRouteWrapper {
           choiceEntity: selectedChoice,
           suggestedPlace: state.suggestedPlace,
           userLocation: state.userLocation,
+          isLocationPermissionGranted: state.isLocationPermissionGranted,
         ),
       ),
       barrierDismissible: false,
