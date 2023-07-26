@@ -47,6 +47,7 @@ class _ChoicesModalSheetState extends State<ChoicesModalSheet> {
   }
 
   List<Widget> _buildChipFilters() => ChoiceType.values
+      .where((type) => !type.isCustom)
       .map(
         (type) => FilterChip(
           label: Text(type.str(context)),
