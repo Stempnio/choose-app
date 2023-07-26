@@ -18,6 +18,7 @@
     "home__suggested_place": "Suggested place",
     "home__suggested_place_nearby": "suggested place nearby",
     "home__check_other_places": "Check out other places nearby",
+    "home__choosing": "Choosing...",
     "choice_type__place": "Place",
     "choice_type__activity": "Activity",
     "choice_type__food": "Food",
