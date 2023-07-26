@@ -44,7 +44,7 @@ dependencies:
 
   # Firebase
   firebase_core: ^2.15.0
-  cloud_firestore: ^4.8.3
+  cloud_firestore: ^4.8.4
 
   # Localization
   flutter_localizations:
