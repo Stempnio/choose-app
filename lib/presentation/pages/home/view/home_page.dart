@@ -4,6 +4,7 @@ import 'package:choose_app/core/core.dart';
 import 'package:choose_app/l10n/l10n.dart';
 import 'package:choose_app/presentation/constants/constants.dart';
 import 'package:choose_app/presentation/pages/home/home.dart';
+import 'package:choose_app/presentation/theme/app_colors.dart';
 import 'package:choose_app/presentation/theme/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -38,11 +39,16 @@ class HomePage extends StatelessWidget implements AutoRouteWrapper {
                     context.l10n.general__or.toUpperCase(),
                     style: context.textTheme.bold.headlineSmall,
                   ),
+                  OutlinedButton(onPressed: () {}, child: Text('select')),
                   Padding(
                     padding: const EdgeInsets.all(smallSize),
                     child: Card(
+                      color: colorPrimary,
                       child: ListTile(
-                        title: Text(context.l10n.home__select_from_list),
+                        title: Text(
+                          context.l10n.home__select_from_list,
+                          style: context.textTheme.bold.titleLarge,
+                        ),
                         trailing: const Icon(Icons.arrow_forward_ios),
                         onTap: () => _onPressedShowModal(context),
                       ),
@@ -173,48 +179,38 @@ class _ChooseButton extends HookWidget {
   const _ChooseButton();
 
   @override
-  Widget build(BuildContext context) {
-    final animController = useAnimationController();
-    final homeBloc = context.watch<HomeBloc>();
-
-    final didSelectOptions = homeBloc.state.maybeMap(
-      success: (state) => state.userChoices.isNotEmpty,
-      orElse: () => false,
-    );
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: smallSize,
-        horizontal: largeSize,
-      ),
-      child: SizedBox(
-        width: double.maxFinite,
-        child: ElevatedButton(
-          onPressed: didSelectOptions
-              ? () => _onPressed(context, animController)
-              : null,
-          child: Animate(
-            controller: animController,
-            autoPlay: false,
-            effects: const [ShakeEffect()],
-            child: Text(
-              didSelectOptions
-                  ? context.l10n.home__choose
-                  : context.l10n.home__select_choices_to_proceed,
-              style: context.textTheme.bold.titleMedium,
-            ),
-          ),
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.symmetric(
+          vertical: smallSize,
+          horizontal: largeSize,
         ),
-      ),
-    );
-  }
+        child: BlocBuilder<HomeBloc, HomeState>(
+          builder: (context, state) {
+            switch (state) {
+              case HomeSuccessState(:final userChoices):
+                final didSelectOptions = userChoices.isNotEmpty;
+                return AnimatedOpacity(
+                  duration: homeSwitchDuration,
+                  opacity: didSelectOptions ? 1 : 0,
+                  child: SizedBox(
+                    width: double.maxFinite,
+                    child: ElevatedButton(
+                      onPressed:
+                          didSelectOptions ? () => _onPressed(context) : null,
+                      child: Text(
+                        context.l10n.home__choose,
+                        style: context.textTheme.bold.titleLarge,
+                      ),
+                    ),
+                  ),
+                );
+              default:
+                return const SizedBox.shrink();
+            }
+          },
+        ),
+      );
 
-  Future<void> _onPressed(
-    BuildContext context,
-    AnimationController controller,
-  ) async {
-    context.read<HomeBloc>().add(const ChoicesSubmitted());
-    await controller.forward();
-    controller.reset();
-  }
+  void _onPressed(BuildContext context) =>
+      context.read<HomeBloc>().add(const ChoicesSubmitted());
 }

@@ -5,6 +5,7 @@ import 'package:choose_app/presentation/constants/dimensions.dart';
 import 'package:choose_app/presentation/constants/durations.dart';
 import 'package:choose_app/presentation/constants/misc.dart';
 import 'package:choose_app/presentation/pages/home/bloc/home_bloc.dart';
+import 'package:choose_app/presentation/utils/border_radius.dart';
 import 'package:choose_app/presentation/utils/spacers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -68,6 +69,12 @@ class ChoiceInputPage extends HookWidget implements AutoRouteWrapper {
                     HSpace.medium(),
                     Expanded(
                       child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: borderRadiusLarge,
+                          ),
+                          // backgroundColor: Colors.deepPurpleAccent,
+                        ),
                         onPressed: () => _onPressedAdd(
                           context,
                           choice: choice.value,
